@@ -1,0 +1,41 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #101015;
+    color: white;
+}
+
+a, a:hover, a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    text-align: center;
+    margin: auto;
+}
+
+.logo {
+    max-width: 320px;
+    margin-bottom: 20px;
+}
+
+.controls {
+    margin-top: 10px;
+}
+
+.controls i {
+    padding: 5px;
+    border: 1px solid white;
+    margin: 2px;
+}
+
+.footer {
+    font-size: 14px;
+}
+
+.fa-heart {
+    color: darkred;
+}
