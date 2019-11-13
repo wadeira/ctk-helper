@@ -23,13 +23,30 @@ a, a:hover, a:visited {
 }
 
 .controls {
-    margin-top: 10px;
+    margin: 15px 0;
 }
 
 .controls i {
     padding: 5px;
     border: 1px solid white;
     margin: 2px;
+}
+
+.remaining-cards {
+    border: 1px solid white;
+    border-spacing: 0;
+    margin: auto;
+}
+
+.remaining-cards td {
+    text-align: center;
+    padding: 5px;
+    width: 15px;
+    margin: 0;
+}
+
+.remaining-cards tr {
+    margin: 0;
 }
 
 .footer {
