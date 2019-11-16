@@ -232,6 +232,11 @@ function _loadgame(hash) {
     })
 }
 
+function openInstructions() {
+
+    open('https://youtu.be/i3YTe4jKZWU', '_blank')
+}
+
 
 function updateExplosions() {
     for (let e in explosions) {
