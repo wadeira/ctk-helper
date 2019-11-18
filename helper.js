@@ -282,6 +282,19 @@ class Game {
                 }
             })
         }
+
+        // Cards that we collected any information
+        let checkedCards = this.cards.filter(c => c.notAFive || c.value != -1 || c.explosions)
+        if (checkedCards.length == 25) {
+            let explodedCards = this.cards.filter(c => c.explosions && !c.notAFive && c.value == -1)
+
+            if (explodedCards.length == this.cards_remaining[5]) {
+                explodedCards.map(card => {
+                    card.value = 5
+                    this.cards_remaining[5]--
+                })
+            }
+        }
     }
 
     findCard(position) {
