@@ -34,11 +34,17 @@ function setup() {
         el: '#app',
         data: {
             cards_remaining: game.cards_remaining,
+            hand: game.hand,
             cardColor
         },
         methods: {
             remainingCardStyle(card) {
                 return `background: ${cardColor[card]}`
+            }
+        },
+        computed: {
+            warnAt4() {
+                return this.hand[0] >= 4
             }
         }
     })
@@ -52,6 +58,7 @@ function draw() {
     game.update()
 
     app.cards_remaining = game.cards_remaining
+    app.hand = game.hand
 
     background(COLORS.background)
 

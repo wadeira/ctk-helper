@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>2G CREW - Catch the King helper</title>
     <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
@@ -30,6 +30,9 @@
     <div class="container" id="app">
         <img src="https://i.imgur.com/1z9sLGg.png" class="logo">
         <div id="canvas-holder"></div>
+        <ul class="alerts">
+            <li v-if="warnAt4">Não te esqueças de jogar todas as cartas abaixo de 4.</li>
+        </ul>
         <div class="controls">
             <i onclick="undo()" class="fa fa-undo"></i>
             <i onclick="redo()" class="fa fa-redo"></i>

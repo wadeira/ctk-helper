@@ -22,6 +22,15 @@ a, a:hover, a:visited {
     margin-bottom: 20px;
 }
 
+.alerts {
+    list-style: none;
+}
+
+.alerts li {
+    font-weight: bold;
+    color: darkred;
+}
+
 .controls {
     margin: 15px 0;
 }
