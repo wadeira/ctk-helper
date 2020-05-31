@@ -192,6 +192,7 @@ function keyPressed() {
 
     if (value == -1) {
         game.clear(pos)
+        this.addToHistory()
         return
     }
 
