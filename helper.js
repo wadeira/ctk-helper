@@ -192,7 +192,6 @@ function keyPressed() {
 
     if (value == -1) {
         game.clear(pos)
-        this.addToHistory()
         return
     }
 
@@ -346,6 +345,7 @@ class Game {
 
         card.value = -1
         card.notAFive = true
+        this.addToHistory()
     }
 
     nearbyPos({x, y}) {
