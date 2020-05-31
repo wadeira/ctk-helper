@@ -241,7 +241,7 @@ function _loadgame(hash) {
 
 function openInstructions() {
 
-    open('https://youtu.be/i3YTe4jKZWU', '_blank')
+    open('https://youtu.be/BRdGkVJVzRg', '_blank')
 }
 
 
