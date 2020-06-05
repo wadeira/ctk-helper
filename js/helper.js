@@ -280,6 +280,7 @@ class Game {
             nearby.map(c => {
                 if (c.fiveProbability < pct) {
                     c.fiveProbability = pct
+                    
                     if (pct == 100 && c.value == -1) {
                         c.value = 5
                         this.cards_remaining[5]--
