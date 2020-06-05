@@ -51,7 +51,6 @@ function setup() {
 
     let canvas = createCanvas(500, 500)
     canvas.parent('canvas-holder')
-
 }
 
 function draw() {
@@ -67,6 +66,7 @@ function draw() {
     for (let y = 0; y < 5; y++) {
         // Verificar se a carta tem um valor atribuido
         let card = game.findCard({x, y})
+
         if (card.value > 0) {
             // Desenhar a carta
             switch(card.value) {
@@ -240,7 +240,6 @@ function _loadgame(hash) {
 }
 
 function openInstructions() {
-
     open('https://youtu.be/BRdGkVJVzRg', '_blank')
 }
 
@@ -281,7 +280,6 @@ class Game {
             nearby.map(c => {
                 if (c.fiveProbability < pct) {
                     c.fiveProbability = pct
-
                     if (pct == 100 && c.value == -1) {
                         c.value = 5
                         this.cards_remaining[5]--
@@ -309,10 +307,9 @@ class Game {
     }
 
     play({x, y}, value, exploded) {
-
         let card = this.findCard({x, y})
 
-        // Check if there is already an value
+        // Check if there is already a value
         if (card.value != -1)
             return
 
@@ -330,8 +327,14 @@ class Game {
 
         card.setValue(value, exploded)
         
-        if (exploded)
+        if (exploded) {
             card.getNearby(this.cards).map(c => c.explosions++)
+            if (this.cards_remaining[5] == 1) {
+                for (let cardAux of this.cards.filter(c => c.fiveProbability > 0 && !c.isNearby(card))) {
+                    cardAux.notAFive = true
+                }
+            }
+        }
         else
             card.getNearby(this.cards).map(c => c.notAFive = true)
 
@@ -442,7 +445,6 @@ class Game {
     }
 }
 
-
 class Card {
     constructor(x, y) {
         this.position = new Vector(x, y)
@@ -489,6 +491,6 @@ class Vector {
     }
 
     distance(vec) {
-        return dist(this.x, this.y, vec.x, vec.y)
+        return Math.floor(dist(this.x, this.y, vec.x, vec.y))
     }
 }
