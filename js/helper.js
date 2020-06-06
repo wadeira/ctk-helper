@@ -343,7 +343,7 @@ class Game {
             for (let cardAux of this.cards.filter(c => c.hasFiveNearby)) {
                 // Find cards nearby that are a five or a possible five
                 let cardsNearby = cardAux.getNearby(this.cards).filter(c => !c.notAFive || c.value == 5)
-                if (this.onlyOneExplosionNearby(cardsNearby)) {
+                if (this.sameNumberOfExplosionsNearby(cardsNearby)) {
                     for (let cardAux2 of this.cards.filter(c => !c.isNearby(cardAux))) {
                         cardAux2.notAFive = true
                     }
@@ -358,9 +358,13 @@ class Game {
         this.addToHistory()
     }
 
-    onlyOneExplosionNearby(cardsNearby) {
+    sameNumberOfExplosionsNearby(cardsNearby) {
+        if (cardsNearby.length == 0)
+            return false
+        
+        let numberOfExplosions = cardsNearby[0].explosions
         for (let cardNearby of cardsNearby) {
-            if (cardNearby.explosions != 1)
+            if (cardNearby.explosions != numberOfExplosions)
                 return false
         }
         return true
