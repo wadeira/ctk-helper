@@ -328,15 +328,15 @@ class Game {
         
         if (exploded) {
             card.getNearby(this.cards).map(c => c.explosions++)
-            if (this.cards_remaining[5] == 1) {
+            let cardsNearby = card.getNearby(this.cards).filter(c => c.value == 5)
+            if (this.cards_remaining[5] == 1 && cardsNearby == 0) { // if there is only a 5 and there are not 5 nearby at the moment
                 for (let cardAux of this.cards.filter(c => c.fiveProbability > 0 && !c.isNearby(card))) {
                     cardAux.notAFive = true
                 }
             }
         }
-        else {
+        else
             card.getNearby(this.cards).map(c => c.notAFive = true)
-        }
 
         // Remove all the probabilities that do not belong to the card that has nearbies with 1 explosion
         if (this.cards_remaining[5] == 2 && value == 5) {
