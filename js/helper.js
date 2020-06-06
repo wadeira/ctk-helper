@@ -324,8 +324,6 @@ class Game {
         if (this.hand[0] <= value || (this.hand[0] == 5 && exploded) || this.hand[0] == 6)
             this.hand.shift()
 
-        this.cards_remaining[value]--
-
         card.setValue(value, exploded)
         
         if (exploded) {
@@ -336,12 +334,36 @@ class Game {
                 }
             }
         }
-        else
+        else {
             card.getNearby(this.cards).map(c => c.notAFive = true)
+        }
+
+        // Remove all the probabilities that do not belong to the card that has nearbies with 1 explosion
+        if (this.cards_remaining[5] == 2 && value == 5) {
+            for (let cardAux of this.cards.filter(c => c.hasFiveNearby)) {
+                // Find cards nearby that are a five or a possible five
+                let cardsNearby = cardAux.getNearby(this.cards).filter(c => !c.notAFive || c.value == 5)
+                if (this.onlyOneExplosionNearby(cardsNearby)) {
+                    for (let cardAux2 of this.cards.filter(c => !c.isNearby(cardAux))) {
+                        cardAux2.notAFive = true
+                    }
+                }
+            }
+        }
+            
+        this.cards_remaining[value]--
 
         this.inputs.push([x, y, value, exploded ? true : false])
 
         this.addToHistory()
+    }
+
+    onlyOneExplosionNearby(cardsNearby) {
+        for (let cardNearby of cardsNearby) {
+            if (cardNearby.explosions != 1)
+                return false
+        }
+        return true
     }
 
     clear({x, y}) {
