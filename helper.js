@@ -331,8 +331,17 @@ class Game {
 
         card.setValue(value, exploded)
         
-        if (exploded)
-            card.getNearby(this.cards).map(c => c.explosions++)
+        if (exploded) {
+            let nearby = card.getNearby(this.cards)
+            nearby.map(c => c.explosions++)
+
+            if (this.cards_remaining[5] == 1 && !nearby.filter(c => c.value == 5).length) {
+                this.cards.map(c => {
+                    if (nearby.indexOf(c) < 0)
+                        c.notAFive = true
+                })
+            }
+        }
         else
             card.getNearby(this.cards).map(c => c.notAFive = true)
 
