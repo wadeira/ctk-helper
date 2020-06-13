@@ -96,7 +96,8 @@ function draw() {
                  y * (height / 5) + ((height / 5) / 2)
             )
         } else if (card.explosions && !card.notAFive && game.cards_remaining[5] > 0) {
-            fill(COLORS.red)
+            let red = (card.explosions * 140 / 8) + 10
+            fill(red, 0, 0)
             rect(
                 x * (width / 5), 
                 y * (height / 5), 
