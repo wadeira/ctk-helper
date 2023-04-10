@@ -1,67 +1,67 @@
 * {
-    font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
-    background-color: #101015;
-    color: white;
+  background-color: #101015;
+  color: white;
 }
 
 a, a:hover, a:visited {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .container {
-    text-align: center;
-    margin: auto;
+  text-align: center;
+  margin: auto;
 }
 
 .logo {
-    max-width: 320px;
-    margin-bottom: 20px;
+  max-width: 320px;
+  margin-bottom: 20px;
 }
 
 .alerts {
-    list-style: none;
+  list-style: none;
 }
 
 .alerts li {
-    font-weight: bold;
-    color: darkred;
+  font-weight: bold;
+  color: darkred;
 }
 
 .controls {
-    margin: 15px 0;
+  margin: 15px 0;
 }
 
 .controls i {
-    padding: 5px;
-    border: 1px solid white;
-    margin: 2px;
+  padding: 5px;
+  border: 1px solid white;
+  margin: 2px;
 }
 
 .remaining-cards {
-    border: 1px solid white;
-    border-spacing: 0;
-    margin: auto;
+  border: 1px solid white;
+  border-spacing: 0;
+  margin: auto;
 }
 
 .remaining-cards td {
-    text-align: center;
-    padding: 5px;
-    width: 15px;
-    margin: 0;
+  text-align: center;
+  padding: 5px;
+  width: 15px;
+  margin: 0;
 }
 
 .remaining-cards tr {
-    margin: 0;
+  margin: 0;
 }
 
 .footer {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .fa-heart {
-    color: darkred;
+  color: darkred;
 }

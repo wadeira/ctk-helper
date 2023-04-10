@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>2G CREW - Catch the King helper</title>
-    <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-    <script src="helper.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="//cookieinfoscript.com/js/cookieinfo.min.js" type="text/javascript" id="cookieinfo"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152625022-1"></script>
-    <script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Metin2 - Catch the King helper</title>
+  <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <script src="helper.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+  <script src="//cookieinfoscript.com/js/cookieinfo.min.js" type="text/javascript" id="cookieinfo"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152625022-1"></script>
+  <script>
     if (/wadeira.github.io\/ctk-helper/.test(location.href)) {
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-152625022-1');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      
+      gtag('config', 'UA-152625022-1');
     }
-    </script>
+  </script>
 </head>
 <body>
-    <div class="container" id="app">
-        <img src="https://i.imgur.com/1z9sLGg.png" class="logo">
-        <div id="canvas-holder"></div>
-        <ul class="alerts">
-            <li v-if="warnAt4">Não te esqueças de jogar todas as cartas abaixo de 4.</li>
-        </ul>
-        <div class="controls">
-            <i onclick="undo()" class="fa fa-undo"></i>
-            <i onclick="redo()" class="fa fa-redo"></i>
-            <i onclick="restart()" class="fas fa-eraser"></i>
-            <i onclick="_savegame()" class="fas fa-save"></i>
-            <i onclick="_loadgame()" class="fas fa-file-upload"></i>
-            <i onclick="openInstructions()" class="fas fa-question"></i>
-        </div>
-
-        <div>
-            Cartas restantes:
-            <table class="remaining-cards">
-                <tr>
-                    <td v-for="card of Object.keys(cards_remaining)" :style="remainingCardStyle(card)">{{ card == '6' ? 'K' : card }}</td>
-                </tr>
-                <tr>
-                    <td v-for="card of cards_remaining" style="background: black">{{ card }}</td>
-                </tr>
-            </table>
-        </div>
-
-        <hr>
-
-        <div class="footer">
-            <p>Made with <i class="fas fa-heart"></i> for <img src="./plague.png"> <i>Plague</i></p>
-            <a href="https://github.com/wadeira/ctk-helper"><i class="fab fa-github"></i> Github</a> 
-        </div>
+  <div class="container" id="app">
+    <img src="https://i.imgur.com/1z9sLGg.png" class="logo">
+    <div id="canvas-holder"></div>
+    <ul class="alerts">
+      <li v-if="warnAt4">Não te esqueças de jogar todas as cartas abaixo de 4.</li>
+    </ul>
+    <div class="controls">
+      <i onclick="undo()" class="fa fa-undo"></i>
+      <i onclick="redo()" class="fa fa-redo"></i>
+      <i onclick="restart()" class="fas fa-eraser"></i>
+      <i onclick="_savegame()" class="fas fa-save"></i>
+      <i onclick="_loadgame()" class="fas fa-file-upload"></i>
+      <i onclick="openInstructions()" class="fas fa-question"></i>
     </div>
+    
+    <div>
+      Cartas restantes:
+      <table class="remaining-cards">
+        <tr>
+          <td v-for="card of Object.keys(cards_remaining)" :style="remainingCardStyle(card)">{{ card == '6' ? 'K' : card }}</td>
+        </tr>
+        <tr>
+          <td v-for="card of cards_remaining" style="background: black">{{ card }}</td>
+        </tr>
+      </table>
+    </div>
+    
+    <hr>
+    
+    <div class="footer">
+      <p>Made with <i class="fas fa-heart"></i> for <img src="./plague.png"> <i>Plague</i></p>
+      <a href="https://github.com/wadeira/ctk-helper"><i class="fab fa-github"></i> Github</a> 
+    </div>
+  </div>
 </body>
 </html>
