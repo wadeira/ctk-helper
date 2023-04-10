@@ -1,0 +1,24 @@
+{
+  "title": "Catch the King Helper",
+  "remaining_cards": "Unrevealed cards:",
+  "undo": "Undo",
+  "redo": "Redo",
+  "clear": "Clear",
+  "save": "Save",
+  "import": "Import",
+  "help": "Help",
+  "remind_play_cards_below4": "Do not forget to reveal every card below 4",
+  "invalid_hash": "Invalid hash",
+  "no_more_cards": "You don't have any more cards [{{value}}] to reveal",
+  "game_hash": "Game hash",
+  "error": "Error",
+  "help_title": "How to use",
+  "help_text": [
+    "This tool aims to assist you playing Metin2's mini game named <b>Catch the King</b> by letting you mark locations of the cards you reveal in game.",
+    "To use it, place your cursor above the played cell and using your keyboard, press the number of the card you reveled in game.",
+    "<small>Tip: King can be marked with the key <b>[K]</b> or <b>[6]</b></small>",
+    "If in the game you were alerted by skulls around the played card, it means there is a <b>[5]</b> nearby, you should press <b>[Shift]</b> key alongside the number of the card revealed in order to mark the cells around it with a chance of having a <b>[5]</b> card."
+  ],
+  "help_watch_video": "Watch video",
+  "help_video_url": "https://youtu.be/BRdGkVJVzRg"
+}

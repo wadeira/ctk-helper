@@ -8,12 +8,16 @@
   <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/i18next@21.7.0/dist/umd/i18next.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@1.2.0/i18nextHttpBackend.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@6.1.1/i18nextBrowserLanguageDetector.min.js"></script>
   <script src="helper.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
   <script src="//cookieinfoscript.com/js/cookieinfo.min.js" type="text/javascript" id="cookieinfo"></script>
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152625022-1"></script>
   <script>
@@ -28,22 +32,23 @@
 </head>
 <body>
   <div class="container" id="app">
-    <img src="https://i.imgur.com/1z9sLGg.png" class="logo">
+    <img src="./2g.png" class="logo">
+    <h2 data-i18n="title"></h2>
     <div id="canvas-holder"></div>
     <ul class="alerts">
-      <li v-if="warnAt4">Não te esqueças de jogar todas as cartas abaixo de 4.</li>
+      <li v-if="warnAt4" data-i18n="remind_play_cards_below4"></li>
     </ul>
     <div class="controls">
-      <i onclick="undo()" class="fa fa-undo"></i>
-      <i onclick="redo()" class="fa fa-redo"></i>
-      <i onclick="restart()" class="fas fa-eraser"></i>
-      <i onclick="_savegame()" class="fas fa-save"></i>
-      <i onclick="_loadgame()" class="fas fa-file-upload"></i>
-      <i onclick="openInstructions()" class="fas fa-question"></i>
+      <i onclick="undo()" class="fa fa-undo" i18n-title="undo"></i>
+      <i onclick="redo()" class="fa fa-redo" i18n-title="redo"></i>
+      <i onclick="restart()" class="fas fa-eraser" i18n-title="clear"></i>
+      <i onclick="_savegame()" class="fas fa-save" i18n-title="save"></i>
+      <i onclick="_loadgame()" class="fas fa-file-upload" i18n-title="import"></i>
+      <i onclick="openInstructions()" class="fas fa-question" i18n-title="help"></i>
     </div>
     
     <div>
-      Cartas restantes:
+      <p data-i18n="remaining_cards"></p>
       <table class="remaining-cards">
         <tr>
           <td v-for="card of Object.keys(cards_remaining)" :style="remainingCardStyle(card)">{{ card == '6' ? 'K' : card }}</td>

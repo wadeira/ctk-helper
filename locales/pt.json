@@ -1,0 +1,24 @@
+{
+  "title": "Apanha o Rei - Helper",
+  "remaining_cards": "Cartas restantes:",
+  "undo": "Desfazer",
+  "redo": "Refazer",
+  "clear": "Limpar",
+  "save": "Guardar",
+  "import": "Importar",
+  "help": "Ajuda",
+  "remind_play_cards_below4": "Não te esqueças de jogar todas as cartas abaixo de 4",
+  "invalid_hash": "Hash inválida",
+  "no_more_cards": "Não tens mais cartas [{{value}}] por revelar",
+  "game_hash": "Hash do jogo",
+  "error": "Erro",
+  "help_title": "Como usar",
+  "help_text": [
+    "Esta ferramenta serve para te ajudar no jogo <b>Apanha o Rei</b> para que possas marcar as cartas que revelas durante o jogo.",
+    "Para usares, coloca o rato por cima da celula onde jogaste, e utiliza o teclado númerico do teu teclado para marcar a carta que revelaste.",
+    "<small>Dica: A carta do Rei pode ser marcada utilizando a tecla <b>[K]</b> ou <b>[6]</b></small>",
+    "Se no jogo fores alertado com caveiras à volta da carta que jogaste, significa que existe um <b>[5]</b> por perto. Deves marcar a carta revelada enquanto pressionas a tecla <b>[Shift]</b> para que as celulas à volta fiquem marcadas a possibilidade de haver uma carta <b>[5]</b>"
+  ],
+  "help_watch_video": "Ver video",
+  "help_video_url": "https://youtu.be/BRdGkVJVzRg"
+}
