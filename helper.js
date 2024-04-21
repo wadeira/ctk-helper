@@ -39,7 +39,8 @@ const COLORS = {
   purple: '#43005C',
   blue: '#000860',
   lightblue: '#007790',
-  yellow: '#8f8f00'
+  yellow: '#8f8f00',
+  grey: '#1d1d26',
 }
 
 const cardColor = {
@@ -150,6 +151,10 @@ function draw() {
         x * (width / 5) + 5,
         y * (height / 5) + 5
       )
+    }
+    else if (card.notAFive) {
+      fill(COLORS.grey);
+      rect(x * (width / 5), y * (height / 5), width / 5, height / 5);
     }
 
     if (game.hand[0] == 5 && card.value != 5) {     
@@ -379,6 +384,9 @@ class Game {
     if (exploded) {
       let nearby = card.getNearby(this.cards)
       nearby.map(c => c.explosions++)
+
+      // create area of probabilities
+      card.createAreaOfProbability();
       
       if (this.cards_remaining[5] == 1 && !nearby.filter(c => c.value == 5).length) {
         this.cards.map(c => {
@@ -390,6 +398,10 @@ class Game {
     else
     card.getNearby(this.cards).map(c => c.notAFive = true)
     
+
+    //Check for areas of probabilities
+    this.checkAreasOfProbability();
+
     this.inputs.push([x, y, value, exploded ? true : false])
     
     this.addToHistory()
@@ -439,10 +451,16 @@ class Game {
       this.history.data.splice(this.history.index + 1, this.history.data.length - this.history.index)
     }
     
+    // Convert Sets to Arrays before storing in history
+    const cardsCopy = this.cards.map((card) => ({
+      ...card,
+      areaOfProbability: card.areaOfProbability ? [...card.areaOfProbability] : null,
+    }));
+
     this.history.data.push(
       JSON.parse(
         JSON.stringify({
-            cards: this.cards,
+            cards: cardsCopy, // Use the converted copy of cards
             explosions: this.explosions,
             cards_remaining: this.cards_remaining,
             hand: this.hand,
@@ -471,31 +489,157 @@ class Game {
   setHistory(index) {
     let data = JSON.parse(JSON.stringify(this.history.data[index]))
     
-    // Change object keys to class
-    for (let i = 0; i < this.cards.length; i++) {
-      for (let key of Object.keys(data.cards[i])) {
-        if (key == 'position') {
-          let { x, y } = data.cards[i][key]
-          this.cards[i][key] = new Vector(x, y)
-          continue
-        }
-        this.cards[i][key] = data.cards[i][key]
-      }    
-    }
-    
-    this.explosions = data.explosions || []
-    this.cards_remaining = data.cards_remaining || []
-    this.hand = data.hand || []
-    this.inputs = data.inputs || []
+    // Restore Sets from Arrays
+    const cardsCopy = data.cards.map((cardData) => {
+      const card = new Card(cardData.position.x, cardData.position.y);
+      card.value = cardData.value;
+      card.explosions = cardData.explosions;
+      card.hasFiveNearby = cardData.hasFiveNearby;
+      card.notAFive = cardData.notAFive;
+      card.fiveProbability = cardData.fiveProbability;
+      card.areaOfProbability = cardData.areaOfProbability ? new Set(cardData.areaOfProbability) : null;
+      return card;
+    });
+
+    this.cards = cardsCopy;
+    this.explosions = data.explosions || [];
+    this.cards_remaining = data.cards_remaining || [];
+    this.hand = data.hand || [];
+    this.inputs = data.inputs || [];
   }
   
   reset() {
     this.history.index = 1
     this.undo()
   }
+
+  /**
+   * Analyzes cards with associated areas of probability to identify and filter combinations
+   * that do not intersect in terms of areas of probability and do not contain a 5
+   * in their areas of probability. Marks cards outside these combinations as "not a five",
+   * only if the length of the combination matches the number of remaining cards with value 5.
+   * 
+   * Exemple scenario :
+   * 
+   * - clic on the card at (1,1) : discover a 1 with a probability of 5 around (marked as P) 
+   * - clic on the card at (1,4) : discover a 3 with a probability of 5 around (marked as P) 
+   * - clic on the card at (3,1) : discover a 2 with a probability of 5 around (marked as P) 
+   * - clic on the card at (4,3) : discover a 4 with no 5s around (marked as -)
+   * 
+   * 
+   *          P | P | P | P | P
+   *          P | 1 | P | 2 | P
+   *          P | P | P | - | -
+   *          P | P | P | - | 4
+   *          P | 3 | P | - | -
+   * 
+   * - clic on the card at (4,2) : discover a 1 with a probability of 5 around (marked as P)
+   * 
+   * --> The card at (4,1) is marked as a 5 by the update() function.
+   * 
+   *          P | P | P | P | P
+   *          P | 1 | P | 2 | 5
+   *          P | P | P | - | 2
+   *          P | P | P | - | 4
+   *          P | 3 | P | - | -
+   * 
+   * --> The checkAreasOfProbability function will deduce that cards at (3,0) and (4,0) cannot be a 5
+   * (because card at (1,1) and (1,3) have their areas of 5 probability non-intersecting, meaning each of them has a 5 around + one 5 has already been discovered)
+   * 
+   *          P | P | P | - | -
+   *          P | 1 | P | 2 | 5
+   *          P | P | P | - | 2
+   *          P | P | P | - | 4
+   *          P | 3 | P | - | -
+   * 
+   */
+  checkAreasOfProbability() {
+    // Filter cards with areas of probability
+    let cardsWithAreasOfProba = this.cards.filter((card) => card.areaOfProbability !== null);
+    let nbCardsWithArea = cardsWithAreasOfProba.length;
+    let maxNbFive = GAME_CARDS[5];
+  
+    // Creation of every combination of cards possessing an area of probability
+    let combinationList = [];
+  
+    // First, add 1 card combinations
+    combinationList = Array.from({ length: nbCardsWithArea }, (_, i) => [i]);
+  
+    // Then, add 2+ card combinations
+    let maxCombinationLength = Math.min(maxNbFive, cardsWithAreasOfProba.length);
+    for (let i = 1; i < maxCombinationLength; i++) {
+      let lastIndice = i;
+      let maxValue = nbCardsWithArea - 1;
+      let output = [];
+      for (let k = 0; k <= lastIndice; k++) {
+        output.push(k);
+      }
+      combinationList.push([...output]);
+      while (lastIndice >= 0) {
+        while (output[lastIndice] < maxValue) {
+          output[lastIndice] += 1;
+          combinationList.push([...output]);
+        }
+        lastIndice--;
+        maxValue--;
+      }
+    }
+  
+    // Now iterate over every combination and look for non-intersection and no 5s in the areas of probability
+    let combinationListFiltered = [];
+  
+    for (let combination of combinationList) {
+      let intersectionFound = false;
+      for (let i = 0; i < combination.length - 1; i++) {
+        const card1 = cardsWithAreasOfProba[combination[i]];
+        for (let j = i + 1; j < combination.length; j++) {
+          const card2 = cardsWithAreasOfProba[combination[j]];
+          const intersection = new Set([...card1.areaOfProbability].filter((x) => card2.areaOfProbability.has(x)));
+  
+          if (intersection.size > 0) {
+            intersectionFound = true;
+            break;
+          }
+        }
+  
+        if (intersectionFound) {
+          break;
+        }
+      }
+      if (!intersectionFound) {
+        let fivesInAreas = false;
+        for (let i of combination) {
+          cardsWithAreasOfProba[i].getNearby(this.cards).filter((c) => c.value == 5).length ? (fivesInAreas = true) : null;
+        }
+        if (!fivesInAreas) {
+          combinationListFiltered.push(combination);
+        }
+      }
+    }
+  
+    // Keep only the combination with length == nb fives remaining and mark cards outside of the combination as not a five
+    console.clear();
+    for (let combination of combinationListFiltered) {
+      if (combination.length != this.cards_remaining[5]) {
+        continue;
+      }
+      for (let card of this.cards) {
+        let isNotInAnyArea = true;
+        combination.forEach((i) => {
+          if (cardsWithAreasOfProba[i].areaOfProbability.has(`${card.position.x},${card.position.y}`)) {
+            isNotInAnyArea = false;
+          }
+        });
+        if (isNotInAnyArea && card.value != 5) {
+          card.notAFive = true;
+          console.log('card at' + card.position.x + ',' + card.position.y + 'is not a five');
+        }
+      }
+    }
+  }
 }
-                    
-                    
+                  
+
 class Card {
   constructor(x, y) {
     this.position = new Vector(x, y)
@@ -506,6 +650,8 @@ class Card {
     this.hasFiveNearby = false
     this.notAFive = false
     this.fiveProbability = 0
+
+    this.areaOfProbability = null;
   }
   
   get id() {
@@ -532,6 +678,24 @@ class Card {
     return arr.filter(card => {
       return floor(card.position.distance(this.position)) == 1
     })
+  }
+
+  createAreaOfProbability() {
+    let area = new Set();
+    // Iterate over neighboring cells (including diagonal)
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        let nx = this.position.x + dx;
+        let ny = this.position.y + dy;
+        // Ensure coordinates are within bounds
+        if (nx >= 0 && nx < 5 && ny >= 0 && ny < 5) {
+          // Add neighboring cell to area of probability
+          area.add(`${nx},${ny}`);
+        }
+      }
+    }
+    this.areaOfProbability = area;
+    console.log(this.areaOfProbability);
   }
 }
                     
